@@ -2,7 +2,29 @@
 
 Sistema de gestión de turnos médicos para una clínica hospitalaria. Aplicación de escritorio construida con Python + Tkinter y MySQL, aplicando la arquitectura **Entity-Control-Boundary (ECB)** de Jacobson.
 
-Desarrollado como trabajo práctico integrador para la materia **Diseño Orientado a Objetos** — UTN.
+Desarrollado como trabajo práctico integrador para la materia **Desarrollo de Aplicaciones con Objetos** — UTN-FRC.
+
+---
+
+## Demo
+
+![Flujo principal: programar turno y generar receta](assets/screenshots/demo.gif)
+
+---
+
+## Capturas
+
+| Turnos | Pacientes |
+|--------|-----------|
+| ![Pestaña turnos](assets/screenshots/turnos.png) | ![Pestaña pacientes](assets/screenshots/pacientes.png) |
+
+| Médicos | Reportes |
+|---------|---------|
+| ![Pestaña médicos](assets/screenshots/medicos.png) | ![Pestaña reportes](assets/screenshots/reportes.png) |
+
+| Programar turno | Receta PDF |
+|-----------------|------------|
+| ![Dialog programar turno](assets/screenshots/programar_turno.png) | ![Receta generada](assets/screenshots/receta_pdf.png) |
 
 ---
 
