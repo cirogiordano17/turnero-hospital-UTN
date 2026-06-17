@@ -1,3 +1,4 @@
+"""Boundary (UI) — Ventana principal y arranque de la aplicación."""
 import tkinter as tk
 from tkinter import ttk
 from .views.turnos_view import TurnosView
@@ -7,24 +8,33 @@ from .views.especialidades_view import EspecialidadesView
 from .views.reportes_view import ReportesView
 from .styles.theme import setup_theme
 
-# Importar scheduler de notificaciones
-import sys
-import os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from gestores.scheduler_notificaciones import SchedulerNotificaciones
+from boundary.persistence.database import Database
+from boundary.persistence.notificacion_dao import NotificacionDAO
+from boundary.persistence.paciente_dao import PacienteDAO
+from boundary.services.email_service import EmailService
+from control.gestor_notificacion import GestorNotificacion
+from control.scheduler_notificaciones import SchedulerNotificaciones
 
 
-def run_app():
+def _build_scheduler(intervalo_minutos: int = 5) -> SchedulerNotificaciones:
+    db = Database()
+    gestor = GestorNotificacion(
+        NotificacionDAO(db),
+        PacienteDAO(db),
+        EmailService(),
+    )
+    return SchedulerNotificaciones(gestor, intervalo_minutos)
+
+
+def run_app() -> None:
     root = tk.Tk()
-    root.title("Turnero Médico – Front Tkinter")
+    root.title("Turnero Médico – Hospital DAO")
     root.geometry("1100x650")
 
     setup_theme()
 
-    # ✨ INICIAR SCHEDULER DE NOTIFICACIONES
-    scheduler = SchedulerNotificaciones(intervalo_minutos=5)
+    scheduler = _build_scheduler(intervalo_minutos=5)
     scheduler.iniciar()
-    print("📲 Sistema de notificaciones automáticas activado")
 
     nb = ttk.Notebook(root)
     nb.pack(fill="both", expand=True)
@@ -35,11 +45,9 @@ def run_app():
     nb.add(EspecialidadesView(nb), text="Especialidades")
     nb.add(ReportesView(nb), text="Reportes")
 
-    # Detener scheduler al cerrar la aplicación
-    def on_closing():
+    def on_closing() -> None:
         scheduler.detener()
         root.destroy()
-    
-    root.protocol("WM_DELETE_WINDOW", on_closing)
 
+    root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()

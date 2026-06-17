@@ -48,7 +48,9 @@ class Database:
                 port=self.port,
                 user=self.user,
                 password=self.password,
-                database=self.database
+                database=self.database,
+                charset='utf8mb4',
+                collation='utf8mb4_unicode_ci'
             )
             
             if self.connection.is_connected():

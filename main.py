@@ -4,20 +4,20 @@ Script principal - Ejemplo de uso del sistema de gestión médica
 
 from datetime import date, time, datetime
 from data.database import Database
-from medico import Medico
-from paciente import Paciente
-from especialidad import Especialidad
-from consultorio import Consultorio
-from agenda import Agenda
-from turno import Turno
-from gestor_turno import GestorTurno
-from receta import Receta
-from detalle_receta import DetalleDeReceta
-from historial_clinico import HistorialClinico
-from medicamento import Medicamento
-from laboratorio import Laboratorio
-from notificacion import Notificacion
-from enums import TipoLaboratorioEnum
+from models.medico import Medico
+from models.paciente import Paciente
+from models.especialidad import Especialidad
+from models.consultorio import Consultorio
+from models.agenda import Agenda
+from models.turno import Turno
+from gestores.gestor_turno import GestorTurno
+from models.receta import Receta
+from models.detalle_receta import DetalleDeReceta
+from models.historial_clinico import HistorialClinico
+from models.medicamento import Medicamento
+from models.laboratorio import Laboratorio
+from models.notificacion import Notificacion
+from models.enums import TipoLaboratorioEnum
 
 
 def main():

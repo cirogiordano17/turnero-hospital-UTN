@@ -9,6 +9,7 @@ if BASE not in sys.path:
     sys.path.insert(0, BASE)
 
 from data.database import Database
+from frontend.widgets.scrollable_frame import ScrollableFrame
 
 
 class CrearMedicoDialog:
@@ -16,20 +17,26 @@ class CrearMedicoDialog:
         self.controller = controller
         self.window = tk.Toplevel(parent)
         self.window.title("Crear Nuevo Médico")
-        self.window.geometry("620x620")
-        self.window.resizable(False, False)
-        
-        # Container principal con padding
+        sw, sh = self.window.winfo_screenwidth(), self.window.winfo_screenheight()
+        w, h = min(620, int(sw * 0.9)), min(620, int(sh * 0.85))
+        self.window.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
+        self.window.resizable(True, True)
+        self.window.minsize(480, 420)
+
         container = ttk.Frame(self.window, padding=20)
         container.pack(fill="both", expand=True)
-        
-        # Título
-        titulo = ttk.Label(container, text="Registrar Nuevo Médico", font=("Arial", 14, "bold"))
-        titulo.pack(pady=(0, 15))
-        
-        # Form frame
-        form_frame = ttk.Frame(container)
-        form_frame.pack(fill="both", expand=True, pady=(0, 15))
+
+        ttk.Label(container, text="Registrar Nuevo Médico", font=("Arial", 14, "bold")).pack(pady=(0, 10))
+
+        btn_frame = ttk.Frame(container)
+        btn_frame.pack(fill="x", side="bottom", pady=(10, 0))
+        ttk.Frame(btn_frame).pack(side="left", expand=True)
+        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy, width=12).pack(side="left", padx=5)
+        ttk.Button(btn_frame, text="✓ Crear", command=self._crear_medico, width=12).pack(side="left", padx=5)
+
+        scroll = ScrollableFrame(container)
+        scroll.pack(fill="both", expand=True)
+        form_frame = scroll.inner
         
         # Matrícula
         ttk.Label(form_frame, text="Matrícula:").grid(row=0, column=0, sticky="w", pady=8, padx=(0, 15))
@@ -105,17 +112,6 @@ class CrearMedicoDialog:
             ttk.Label(self.esp_frame_scroll, text="No hay especialidades disponibles", foreground="gray").pack(anchor="w", padx=5)
         
         form_frame.columnconfigure(1, weight=1)
-        
-        # Frame de botones (separado del container principal)
-        btn_frame = ttk.Frame(container)
-        btn_frame.pack(fill="x", side="bottom", pady=(15, 0))
-        
-        # Espaciador a la izquierda
-        ttk.Frame(btn_frame).pack(side="left", expand=True)
-        
-        # Botones a la derecha
-        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy, width=12).pack(side="left", padx=5)
-        ttk.Button(btn_frame, text="✓ Crear", command=self._crear_medico, width=12).pack(side="left", padx=5)
     
     def _cargar_especialidades(self):
         """Carga las especialidades desde la BD"""

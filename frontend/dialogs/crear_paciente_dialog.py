@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from datetime import date
+import sys, os
+BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if BASE not in sys.path:
+    sys.path.insert(0, BASE)
+from frontend.widgets.scrollable_frame import ScrollableFrame
 
 
 class CrearPacienteDialog:
@@ -8,20 +13,26 @@ class CrearPacienteDialog:
         self.controller = controller
         self.window = tk.Toplevel(parent)
         self.window.title("Crear Nuevo Paciente")
-        self.window.geometry("500x450")
-        self.window.resizable(False, False)
-        
-        # Container principal
+        sw = self.window.winfo_screenwidth()
+        sh = self.window.winfo_screenheight()
+        w, h = min(500, int(sw * 0.9)), min(480, int(sh * 0.85))
+        self.window.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
+        self.window.resizable(True, True)
+        self.window.minsize(420, 350)
+
         container = ttk.Frame(self.window)
         container.pack(fill="both", expand=True, padx=20, pady=20)
-        
-        # Título
-        titulo = ttk.Label(container, text="Registrar Nuevo Paciente", font=("Arial", 14, "bold"))
-        titulo.pack(pady=(0, 20))
-        
-        # Form frame
-        form_frame = ttk.Frame(container)
-        form_frame.pack(fill="both", expand=True, pady=(0, 20))
+
+        ttk.Label(container, text="Registrar Nuevo Paciente", font=("Arial", 14, "bold")).pack(pady=(0, 10))
+
+        btn_frame = ttk.Frame(container)
+        btn_frame.pack(fill="x", side="bottom", pady=(10, 0))
+        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy).pack(side="right", padx=5)
+        ttk.Button(btn_frame, text="✓ Crear", command=self._crear_paciente).pack(side="right", padx=5)
+
+        scroll = ScrollableFrame(container)
+        scroll.pack(fill="both", expand=True)
+        form_frame = scroll.inner
         
         # ID Paciente
         ttk.Label(form_frame, text="ID Paciente:").grid(row=0, column=0, sticky="w", pady=8)
@@ -54,13 +65,6 @@ class CrearPacienteDialog:
         self.text_direccion.grid(row=5, column=1, sticky="ew", padx=(10, 0))
         
         form_frame.columnconfigure(1, weight=1)
-        
-        # Botones
-        btn_frame = ttk.Frame(container)
-        btn_frame.pack(fill="x", side="bottom")
-        
-        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy).pack(side="right", padx=5)
-        ttk.Button(btn_frame, text="✓ Crear", command=self._crear_paciente).pack(side="right", padx=5)
     
     def _crear_paciente(self):
         """Valida y crea el paciente"""

@@ -11,8 +11,8 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-from gestor_medico import GestorMedico
-from especialidad import Especialidad
+from gestores.gestor_medico import GestorMedico
+from models.especialidad import Especialidad
 from data.database import Database
 
 

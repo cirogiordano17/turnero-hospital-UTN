@@ -24,8 +24,13 @@ class AtenderTurnoDialog:
         self.recetas = []  # Lista de recetas agregadas
         self.window = tk.Toplevel(parent)
         self.window.title("Atender Turno - Registrar Historial Clínico")
-        self.window.geometry("720x700")
-        self.window.resizable(False, False)
+        screen_w = self.window.winfo_screenwidth()
+        screen_h = self.window.winfo_screenheight()
+        w = min(720, int(screen_w * 0.9))
+        h = min(700, int(screen_h * 0.85))
+        self.window.geometry(f"{w}x{h}+{(screen_w-w)//2}+{(screen_h-h)//2}")
+        self.window.resizable(True, True)
+        self.window.minsize(600, 500)
         
         # Container principal con padding
         main_container = ttk.Frame(self.window, padding=10)
@@ -50,7 +55,8 @@ class AtenderTurnoDialog:
             lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all"))
         )
         
-        self.canvas.create_window((0, 0), window=scrollable_frame, anchor="nw", width=680)
+        win_id = self.canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        self.canvas.bind("<Configure>", lambda e: self.canvas.itemconfig(win_id, width=e.width))
         self.canvas.configure(yscrollcommand=scrollbar.set)
         
         # Bind scroll del mouse

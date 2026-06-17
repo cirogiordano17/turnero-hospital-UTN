@@ -6,8 +6,8 @@ import os
 # Agregar el directorio padre al path para importar módulos
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from medico import Medico
-from especialidad import Especialidad
+from models.medico import Medico
+from models.especialidad import Especialidad
 
 
 class GestorMedico:

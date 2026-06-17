@@ -1,5 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
+import sys, os
+BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if BASE not in sys.path:
+    sys.path.insert(0, BASE)
+from frontend.widgets.scrollable_frame import ScrollableFrame
 
 
 class ModificarMedicoDialog:
@@ -8,24 +13,31 @@ class ModificarMedicoDialog:
         self.medico_data = medico_data
         self.window = tk.Toplevel(parent)
         self.window.title("Modificar Médico")
-        self.window.geometry("600x550")
-        self.window.resizable(False, False)
-        
-        # Container principal con padding
+        sw, sh = self.window.winfo_screenwidth(), self.window.winfo_screenheight()
+        w, h = min(600, int(sw * 0.9)), min(560, int(sh * 0.85))
+        self.window.geometry(f"{w}x{h}+{(sw-w)//2}+{(sh-h)//2}")
+        self.window.resizable(True, True)
+        self.window.minsize(480, 400)
+
         container = ttk.Frame(self.window, padding=15)
         container.pack(fill="both", expand=True)
-        
-        # Título
-        titulo = ttk.Label(
+
+        ttk.Label(
             container,
             text=f"Modificar Médico: {medico_data['nombre']} {medico_data['apellido']}",
             font=("Arial", 13, "bold")
-        )
-        titulo.pack(pady=(0, 20))
-        
-        # Form frame con LabelFrame
-        form_frame = ttk.LabelFrame(container, text="Datos del Médico", padding=15)
-        form_frame.pack(fill="both", expand=True, pady=(0, 15))
+        ).pack(pady=(0, 10))
+
+        btn_frame = ttk.Frame(container)
+        btn_frame.pack(fill="x", side="bottom", pady=(10, 0))
+        btn_frame.columnconfigure(0, weight=1)
+        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy).grid(row=0, column=1, padx=5, sticky="e")
+        ttk.Button(btn_frame, text="✓ Guardar Cambios", command=self._modificar_medico).grid(row=0, column=2, padx=5, sticky="e")
+
+        scroll = ScrollableFrame(container)
+        scroll.pack(fill="both", expand=True)
+        form_frame = ttk.LabelFrame(scroll.inner, text="Datos del Médico", padding=15)
+        form_frame.pack(fill="both", expand=True, padx=5, pady=5)
         
         # Matrícula (NO EDITABLE)
         matric_label_title = ttk.Label(form_frame, text="Matrícula:", font=("Arial", 9, "bold"))
@@ -65,15 +77,6 @@ class ModificarMedicoDialog:
         self.entry_fecha_alta.grid(row=5, column=1, sticky="ew", padx=(0, 0), pady=10)
         
         form_frame.columnconfigure(1, weight=1)
-        
-        # Frame de botones
-        btn_frame = ttk.Frame(container)
-        btn_frame.pack(fill="x", side="bottom", expand=False, pady=(10, 0))
-        
-        btn_frame.columnconfigure(0, weight=1)
-        
-        ttk.Button(btn_frame, text="Cancelar", command=self.window.destroy).grid(row=0, column=1, padx=5, sticky="e")
-        ttk.Button(btn_frame, text="✓ Guardar Cambios", command=self._modificar_medico).grid(row=0, column=2, padx=5, sticky="e")
     
     def _modificar_medico(self):
         """Valida y modifica el médico"""

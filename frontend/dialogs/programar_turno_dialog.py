@@ -9,6 +9,7 @@ if BASE not in sys.path:
     sys.path.insert(0, BASE)
 
 from data.database import Database
+from frontend.widgets.scrollable_frame import ScrollableFrame
 
 
 class ProgramarTurnoDialog:
@@ -16,8 +17,15 @@ class ProgramarTurnoDialog:
         self.controller = controller
         self.window = tk.Toplevel(parent)
         self.window.title("Programar Nuevo Turno")
-        self.window.geometry("950x750")
-        self.window.resizable(False, False)
+        screen_w = self.window.winfo_screenwidth()
+        screen_h = self.window.winfo_screenheight()
+        w = min(950, int(screen_w * 0.9))
+        h = min(750, int(screen_h * 0.85))
+        x = (screen_w - w) // 2
+        y = (screen_h - h) // 2
+        self.window.geometry(f"{w}x{h}+{x}+{y}")
+        self.window.resizable(True, True)
+        self.window.minsize(700, 500)
         
         self.paso_actual = 1
         self.especialidad_seleccionada = None  # NUEVO
@@ -31,18 +39,19 @@ class ProgramarTurnoDialog:
         self.titulo = ttk.Label(self.container, text="", font=("Arial", 12, "bold"))
         self.titulo.pack(pady=(0, 10))
         
-        self.frame_paso = ttk.Frame(self.container)
-        self.frame_paso.pack(fill="both", expand=True, pady=(0, 10))
-        
         self.frame_botones = ttk.Frame(self.container)
         self.frame_botones.pack(fill="x", pady=(10, 0), side="bottom")
+
+        self._scroll_area = ScrollableFrame(self.container)
+        self._scroll_area.pack(fill="both", expand=True, pady=(0, 10))
+        self.frame_paso = self._scroll_area.inner
         
         self._mostrar_paso_1()
     
     def _limpiar_frame(self):
-        """Limpia el frame de pasos"""
         for widget in self.frame_paso.winfo_children():
             widget.destroy()
+        self._scroll_area.scroll_to_top()
     
     def _obtener_especialidades_directo(self):
         """Obtiene especialidades directamente de la BD"""

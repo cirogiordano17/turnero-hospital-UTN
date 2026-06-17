@@ -1,12 +1,10 @@
 from tkinter import ttk
+import sv_ttk
 
 def setup_theme():
-    style = ttk.Style()
-    try:
-        style.theme_use("clam")
-    except:
-        pass
+    sv_ttk.set_theme("light")
 
+    style = ttk.Style()
     style.configure("TButton", padding=6)
     style.configure("TLabel", padding=4)
-    style.configure("Treeview", rowheight=26)
+    style.configure("Treeview", rowheight=28)

@@ -15,8 +15,13 @@ class AgregarRecetaDialog:
         """Diálogo para crear una receta con sus detalles"""
         self.window = tk.Toplevel(parent)
         self.window.title("Agregar Receta")
-        self.window.geometry("720x620")
-        self.window.resizable(False, False)
+        screen_w = self.window.winfo_screenwidth()
+        screen_h = self.window.winfo_screenheight()
+        w = min(720, int(screen_w * 0.9))
+        h = min(620, int(screen_h * 0.85))
+        self.window.geometry(f"{w}x{h}+{(screen_w-w)//2}+{(screen_h-h)//2}")
+        self.window.resizable(True, True)
+        self.window.minsize(580, 450)
         
         # Datos de la receta
         self.receta_data = None
