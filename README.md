@@ -6,25 +6,19 @@ Desarrollado como trabajo práctico integrador para la materia **Desarrollo de A
 
 ---
 
-## Demo
-
-![Flujo principal: programar turno y generar receta](assets/screenshots/demo.gif)
-
----
-
 ## Capturas
 
 | Turnos | Pacientes |
 |--------|-----------|
 | ![Pestaña turnos](assets/screenshots/turnos.png) | ![Pestaña pacientes](assets/screenshots/pacientes.png) |
 
-| Médicos | Reportes |
-|---------|---------|
-| ![Pestaña médicos](assets/screenshots/medicos.png) | ![Pestaña reportes](assets/screenshots/reportes.png) |
+| Médicos | Especialidades |
+|---------|----------------|
+| ![Pestaña médicos](assets/screenshots/medicos.png) | ![Pestaña especialidades](assets/screenshots/especialidades.png) |
 
-| Programar turno | Receta PDF |
-|-----------------|------------|
-| ![Dialog programar turno](assets/screenshots/programar_turno.png) | ![Receta generada](assets/screenshots/receta_pdf.png) |
+| Reportes | Programar turno |
+|----------|-----------------|
+| ![Pestaña reportes](assets/screenshots/reportes.png) | ![Dialog programar turno](assets/screenshots/programar_turno.png) |
 
 ---
 

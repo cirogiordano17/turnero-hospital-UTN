@@ -151,3 +151,6 @@ secrets.py
 # Archivos de reportes generados
 reports/out/
 !ampliacion_bd_contactos.sql
+
+# Scripts de desarrollo/utilidades
+take_screenshots.py

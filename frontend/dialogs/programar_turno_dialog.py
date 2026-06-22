@@ -60,7 +60,7 @@ class ProgramarTurnoDialog:
             return []
         
         try:
-            query = "SELECT id_especialidad, nombre FROM Especialidad ORDER BY nombre"
+            query = "SELECT id_especialidad, nombre, descripcion FROM Especialidad ORDER BY nombre"
             especialidades = db.obtener_registros(query)
             db.desconectar()
             return especialidades if especialidades else []
@@ -362,7 +362,7 @@ class ProgramarTurnoDialog:
         alto_celda = 50
         
         # Encabezados
-        consultorios = sorted(set(t['consultorio_numero'] for t in turnos_fecha))
+        consultorios = sorted(set(t['consultorio'] for t in turnos_fecha))
         self.canvas_turnos.create_text(x_inicio - 10, y_inicio + 15, text="Hora", 
                                       font=("Arial", 9, "bold"), anchor="w")
         
@@ -386,7 +386,7 @@ class ProgramarTurnoDialog:
                 x = x_inicio + (i + 1) * ancho_celda
                 
                 # Buscar turno
-                turno = next((t for t in turnos_fecha if str(t['hora_inicio']) == hora and t['consultorio_numero'] == cons), None)
+                turno = next((t for t in turnos_fecha if str(t['hora_inicio']) == hora and t['consultorio'] == cons), None)
                 
                 if turno:
                     # Botón disponible (verde)
@@ -478,7 +478,7 @@ class ProgramarTurnoDialog:
 Médico: Dr/Dra. {self.medico_seleccionado['nombre']} {self.medico_seleccionado['apellido']}
 Fecha: {self.turno_seleccionado['fecha']}
 Horario: {self.turno_seleccionado['hora_inicio']} - {self.turno_seleccionado['hora_fin']}
-Consultorio: #{self.turno_seleccionado['consultorio_numero']}"""
+Consultorio: #{self.turno_seleccionado['consultorio']}"""
         
         ttk.Label(frame_resumen, text=resumen_text, font=("Arial", 9), justify="left").pack(anchor="w")
         
